@@ -2,38 +2,17 @@
 
 import PackageDescription
 
-let rocketIfNeeded: [Package.Dependency]
-
-#if os(OSX) || os(Linux)
-rocketIfNeeded = [
-    .package(url: "https://github.com/shibapm/Rocket", .upToNextMajor(from: "1.2.0")) // dev
-]
-#else
-rocketIfNeeded = []
-#endif
-
 let package = Package(
     name: "Moya",
     platforms: [
-        .macOS(.v10_12),
-        .iOS(.v10),
-        .tvOS(.v10),
-        .watchOS(.v3)
+        .iOS(.v10)
     ],
     products: [
-        .library(name: "Moya", targets: ["Moya"]),
-        .library(name: "CombineMoya", targets: ["CombineMoya"]),
-        .library(name: "ReactiveMoya", targets: ["ReactiveMoya"]),
-        .library(name: "RxMoya", targets: ["RxMoya"])
+        .library(name: "Moya", targets: ["Moya"])
     ],
     dependencies: [
-        .package(url: "https://github.com/Alamofire/Alamofire.git", .upToNextMajor(from: "5.0.0")),
-        .package(url: "https://github.com/ReactiveCocoa/ReactiveSwift.git", .upToNextMajor(from: "6.0.0")),
-        .package(url: "https://github.com/ReactiveX/RxSwift.git", .upToNextMajor(from: "6.0.0")),
-        .package(url: "https://github.com/Quick/Quick.git", .upToNextMajor(from: "4.0.0")), // dev
-        .package(url: "https://github.com/Quick/Nimble.git", .upToNextMajor(from: "9.0.0")), // dev
-        .package(url: "https://github.com/AliSoftware/OHHTTPStubs.git", .upToNextMajor(from: "9.0.0")) // dev
-    ] + rocketIfNeeded,
+        .package(url: "https://github.com/Alamofire/Alamofire.git", .exactItem("5.4.4"))
+    ],
     targets: [
         .target(
             name: "Moya",
@@ -42,38 +21,6 @@ let package = Package(
             ],
             exclude: [
                 "Supporting Files/Info.plist"
-            ]
-        ),
-        .target(
-            name: "CombineMoya",
-            dependencies: [
-                "Moya"
-            ]
-        ),
-        .target(
-            name: "ReactiveMoya",
-            dependencies: [
-                "Moya",
-                .product(name: "ReactiveSwift", package: "ReactiveSwift")
-            ]
-        ),
-        .target(
-            name: "RxMoya",
-            dependencies: [
-                "Moya",
-                .product(name: "RxSwift", package: "RxSwift")
-            ]
-        ),
-        .testTarget(
-            name: "MoyaTests",  // dev
-            dependencies: [
-                "Moya",
-                "CombineMoya",
-                "ReactiveMoya",
-                "RxMoya",
-                .product(name: "Quick", package: "Quick"),
-                .product(name: "Nimble", package: "Nimble"),
-                .product(name: "OHHTTPStubsSwift", package: "OHHTTPStubs")
             ]
         )
     ]
